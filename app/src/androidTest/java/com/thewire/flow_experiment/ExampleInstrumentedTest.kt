@@ -1,7 +1,8 @@
 package com.thewire.flow_experiment
 
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,9 +17,11 @@ import org.junit.Assert.*
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
     @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.thewire.flow_experiment", appContext.packageName)
+    fun first_result_is_loading() {
+        val backend = Backend()
+        runBlocking {
+            val result = backend.getFlow().first()
+            assertEquals(result.loading, true)
+        }
     }
 }

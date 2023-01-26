@@ -1,5 +1,7 @@
 package com.thewire.flow_experiment
 
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -11,7 +13,11 @@ import org.junit.Assert.*
  */
 class ExampleUnitTest {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun first_result_is_loading() {
+        val backend = Backend()
+        runBlocking {
+            val result = backend.getFlow().first()
+            assertEquals(result.loading, true)
+        }
     }
 }
