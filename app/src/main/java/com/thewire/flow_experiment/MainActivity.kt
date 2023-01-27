@@ -12,7 +12,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.thewire.flow_experiment.ui.theme.Flow_experimentTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,7 +25,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    flowThing(viewModel::getFlow, viewModel.data.value)
+                    Column() {
+                        FlowThing(viewModel::getFlow, viewModel.data.value)
+                        FlowFlowThing(
+                            callback = viewModel::getFlowFlow,
+                            data = viewModel.flowFlowData,
+                            loading = viewModel.loadingState.value,
+                            error = viewModel.errorState.value,
+                        )
+                    }
+
                 }
             }
         }
@@ -34,7 +42,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun flowThing(callback: () -> Unit, data: String) {
+fun FlowThing(callback: () -> Unit, data: String) {
     Column() {
         Button(
             onClick = callback
@@ -42,5 +50,33 @@ fun flowThing(callback: () -> Unit, data: String) {
             Text("Get Flow")
         }
         Text(data)
+    }
+}
+
+@Composable
+fun FlowFlowThing(
+    callback: () -> Unit,
+    data: List<String>,
+    loading: Boolean,
+    error: Boolean
+) {
+    Column() {
+        Button(
+            onClick = callback
+        ) {
+            Text("Get Flow Flow")
+        }
+        if (error) {
+            Text("There is an error")
+        } else {
+            if (loading) {
+                Text("Loading...")
+            } else {
+                for (d in data) {
+                    Text(d)
+                }
+            }
+        }
+
     }
 }
