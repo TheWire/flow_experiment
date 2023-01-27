@@ -29,9 +29,12 @@ class Backend() {
         delay(1000)
         emit(DataState.loading())
         delay(1000)
-        anotherFlow().collect {
-            emit(DataState.success(it))
+        altFlow().collect {
+            emit(it)
         }
+//        anotherFlow().collect {
+//            emit(DataState.success(it))
+//        }
         job.cancel()
         emit(DataState.success("done"))
     }
@@ -39,6 +42,13 @@ class Backend() {
     private fun anotherFlow(): Flow<String> = flow {
         for (i in 1..10) {
             emit("this is a string $i")
+            delay(500)
+        }
+    }
+
+    private fun altFlow(): Flow<DataState<String>> = flow {
+        for (i in 1..10) {
+            emit(DataState.success("this is a string $i"))
             delay(500)
         }
     }
