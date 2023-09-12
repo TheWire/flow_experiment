@@ -53,7 +53,7 @@ class Backend() {
         }
     }
 
-    suspend fun backGroundStuff() {
+    private suspend fun backGroundStuff() {
         for (i in 1..10) {
             delay(1000)
             println("doing stuff in background $i")

@@ -8,8 +8,10 @@ import kotlinx.coroutines.launch
 
 class FlowViewModel() : ViewModel() {
     private val backend = Backend()
+    private val intermediate = Intermediate(backend)
     val data = mutableStateOf("")
     val flowFlowData = mutableStateListOf<String>()
+    val filteredFlowFlowData = mutableStateListOf<String>()
     val errorState = mutableStateOf(false)
     val loadingState = mutableStateOf(false)
     fun getFlow() {
@@ -24,6 +26,22 @@ class FlowViewModel() : ViewModel() {
 
     }
 
+    fun getFilteredFlowFlow() {
+        viewModelScope.launch {
+            intermediate.getFilteredFlowFlow.collect {
+                loadingState.value = it.loading
+                it.data?.let { text ->
+                    filteredFlowFlowData.add(text)
+                    println(text)
+                }
+                it.error?.let { error ->
+                    errorState.value = true
+                    println("error $error")
+                }
+            }
+        }
+    }
+
     fun getFlowFlow() {
         viewModelScope.launch {
             backend.getFlowFlow().collect {
@@ -34,7 +52,7 @@ class FlowViewModel() : ViewModel() {
                 }
                 it.error?.let { error ->
                     errorState.value = true
-                    println("erro")
+                    println("error $error")
                 }
             }
         }

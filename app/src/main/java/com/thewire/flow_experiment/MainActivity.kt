@@ -33,6 +33,12 @@ class MainActivity : ComponentActivity() {
                             loading = viewModel.loadingState.value,
                             error = viewModel.errorState.value,
                         )
+                        FlowFlowThing(
+                            callback = viewModel::getFilteredFlowFlow,
+                            data = viewModel.filteredFlowFlowData,
+                            loading = viewModel.loadingState.value,
+                            error = viewModel.errorState.value,
+                        )
                     }
 
                 }
