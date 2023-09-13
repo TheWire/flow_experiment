@@ -1,5 +1,6 @@
 package com.thewire.flow_experiment
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -8,6 +9,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.coroutineContext
 
+const val TAG = "BACKEND"
 class Backend() {
 
     fun getFlow(): Flow<DataState<String>> = flow {
@@ -39,9 +41,12 @@ class Backend() {
         emit(DataState.success("done"))
     }
 
-    private fun anotherFlow(): Flow<String> = flow {
+    fun anotherFlow(): Flow<String> = flow {
+        Log.i(TAG, "anotherFlow")
         for (i in 1..10) {
-            emit("this is a string $i")
+            val flowString = "this is a string $i"
+            emit(flowString)
+            Log.i(TAG, "anotherFLow $flowString")
             delay(500)
         }
     }

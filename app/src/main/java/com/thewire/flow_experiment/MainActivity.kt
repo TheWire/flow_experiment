@@ -11,7 +11,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.thewire.flow_experiment.ui.theme.Flow_experimentTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,6 +27,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    val flowData by viewModel.flowData.collectAsStateWithLifecycle(initialValue = "")
+                    val anotherFlow by viewModel.anotherFlow.collectAsStateWithLifecycle(initialValue = null)
                     Column() {
                         FlowThing(viewModel::getFlow, viewModel.data.value)
                         FlowFlowThing(
@@ -39,6 +43,15 @@ class MainActivity : ComponentActivity() {
                             loading = viewModel.loadingState.value,
                             error = viewModel.errorState.value,
                         )
+                        Text(flowData)
+                        Button(
+                            onClick = viewModel::startAnotherFLow
+                        ) {
+                            Text("Another Flow")
+                        }
+                        anotherFlow?.let{
+                            Text(it)
+                        }
                     }
 
                 }

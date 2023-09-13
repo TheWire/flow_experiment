@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 class FlowViewModel() : ViewModel() {
@@ -14,6 +15,8 @@ class FlowViewModel() : ViewModel() {
     val filteredFlowFlowData = mutableStateListOf<String>()
     val errorState = mutableStateOf(false)
     val loadingState = mutableStateOf(false)
+    val flowData = backend.anotherFlow()
+    var anotherFlow = flowOf<String?>(null)
     fun getFlow() {
         viewModelScope.launch {
             backend.getFlow().collect {
@@ -40,6 +43,10 @@ class FlowViewModel() : ViewModel() {
                 }
             }
         }
+    }
+
+    fun startAnotherFLow() {
+        anotherFlow = backend.anotherFlow()
     }
 
     fun getFlowFlow() {
