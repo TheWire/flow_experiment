@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.coroutineContext
 
-const val TAG = "BACKEND"
+private const val TAG = "BACKEND"
 class Backend() {
 
     fun getFlow(): Flow<DataState<String>> = flow {

@@ -1,13 +1,17 @@
 package com.thewire.flow_experiment
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class FlowViewModel() : ViewModel() {
+private const val TAG = "FLOW_VIEWMODEL"
+    class FlowViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     private val backend = Backend()
     private val intermediate = Intermediate(backend)
     val data = mutableStateOf("")
@@ -17,6 +21,12 @@ class FlowViewModel() : ViewModel() {
     val loadingState = mutableStateOf(false)
     val flowData = backend.anotherFlow()
     var anotherFlow = flowOf<String?>(null)
+
+    val dataToSave = savedStateHandle.getStateFlow(key ="dataToSave", initialValue = "").map {
+        Log.i(TAG, it)
+        it
+    }
+
     fun getFlow() {
         viewModelScope.launch {
             backend.getFlow().collect {
@@ -27,6 +37,10 @@ class FlowViewModel() : ViewModel() {
             }
         }
 
+    }
+
+    fun saveData(data: String) {
+        savedStateHandle.set(key="dataToSave", data)
     }
 
     fun getFilteredFlowFlow() {
