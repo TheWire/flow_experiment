@@ -60,6 +60,8 @@ private const val TAG = "FLOW_VIEWMODEL"
     }
 
     fun startAnotherFLow() {
+        // this approach doesn't work on its own doesn't recompose
+        Log.i(TAG, "startAnotherFLow")
         anotherFlow = backend.anotherFlow()
     }
 

@@ -38,6 +38,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val flowData by viewModel.flowData.collectAsStateWithLifecycle(initialValue = "")
                     val anotherFlow by viewModel.anotherFlow.collectAsStateWithLifecycle(initialValue = null)
+                    // this approach doesn't work on its own doesn't recompose
                     val dataToSave by viewModel.dataToSave.collectAsStateWithLifecycle(initialValue = "")
                     var dataField by remember{ mutableStateOf(TextFieldValue(dataToSave)) }
                     Column() {
